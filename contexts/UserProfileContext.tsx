@@ -1,7 +1,7 @@
 import createContextHook from "@nkzw/create-context-hook";
 import { useState, useEffect, useCallback } from "react";
 import { UserProfile } from "@/types/types";
-import { adapter } from "@/data";
+import { adapter } from "@/services/db";
 import { z } from "zod";
 
 const UserProfileZ = z.object({

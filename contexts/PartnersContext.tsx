@@ -1,6 +1,6 @@
 import createContextHook from "@nkzw/create-context-hook";
 import { useState, useEffect, useCallback } from "react";
-import { adapter } from "@/data";
+import { adapter } from "@/services/db";
 import { z } from "zod";
 import { PartnerProfileSchema, type PartnerProfile } from "@/types/schemas";
 
