@@ -54,6 +54,7 @@ function RootLayoutNav() {
       <Stack.Screen name="date-planner/experience" options={{ title: "Date Experience" }} />
       <Stack.Screen name="date-planner/time" options={{ title: "Date Time" }} />
       <Stack.Screen name="date-planner/recommendations" options={{ title: "Recommendations" }} />
+      <Stack.Screen name="date-planner/itinerary" options={{ title: "Itinerary" }} />
     </Stack>
   );
 }
