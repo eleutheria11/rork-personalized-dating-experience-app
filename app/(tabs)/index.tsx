@@ -33,22 +33,22 @@ const RELATIONSHIP_PHASES: Array<{
     gradient: ["#FF6B6B", "#FF8E53"] as const,
   },
   {
-    id: "courtship",
-    title: "Courtship",
+    id: "courting",
+    title: "Courting / Getting to know each other",
     subtitle: "3-15 dates",
     icon: Heart,
     gradient: ["#E91E63", "#F06292"] as const,
   },
   {
-    id: "dating",
-    title: "Dating",
+    id: "exclusive",
+    title: "Dating / Exclusive",
     subtitle: "15+ dates",
     icon: Gift,
     gradient: ["#9C27B0", "#BA68C8"] as const,
   },
   {
-    id: "reconciliation",
-    title: "Reconciliation",
+    id: "patching",
+    title: "Patching Things Up",
     subtitle: "Making up",
     icon: MessageCircle,
     gradient: ["#3F51B5", "#7986CB"] as const,
@@ -76,14 +76,7 @@ export default function DiscoverScreen() {
 
   const handlePhaseSelect = (phase: RelationshipPhase) => {
     setSelectedPhase(phase);
-    if (!currentPartner) {
-      router.push("/partner-setup" as any);
-    } else {
-      router.push({
-        pathname: "/date-details" as any,
-        params: { phase },
-      } as never);
-    }
+    router.push('/date-planner/experience' as any);
   };
 
   const handleAddPartner = () => {
@@ -122,7 +115,7 @@ export default function DiscoverScreen() {
                   <View style={styles.detailItem}>
                     <MapPin size={14} color="#fff" />
                     <Text style={styles.detailText}>
-                      {profile?.city}, {profile?.state} {profile?.zipCode ? `• ${profile?.zipCode}` : ""}
+                      {profile?.city}, {profile?.country} {profile?.zipCode ? `• ${profile?.zipCode}` : ""}
                     </Text>
                   </View>
                   <View style={styles.detailItem}>

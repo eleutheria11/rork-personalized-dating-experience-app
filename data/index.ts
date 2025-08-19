@@ -17,6 +17,10 @@ export interface DataAdapter {
   getSession(): Promise<Session | null>;
   upsertSession(session: Session): Promise<void>;
   clearAll(): Promise<void>;
+
+  // Planner additions
+  updateDesiredExperiences(exps: string[]): Promise<void>;
+  updateDateStartISO(iso: string): Promise<void>;
 }
 
 const KEYS = {
@@ -136,6 +140,34 @@ export class LocalStorageAdapter implements DataAdapter {
 
   async clearAll(): Promise<void> {
     await AsyncStorage.multiRemove(Object.values(KEYS));
+  }
+
+  async updateDesiredExperiences(exps: string[]): Promise<void> {
+    const existing = await this.getSession();
+    const merged: Session = SessionSchema.parse({
+      id: existing?.id ?? 'session-1',
+      createdAt: existing?.createdAt ?? Date.now(),
+      lastActiveAt: Date.now(),
+      currentPartnerId: existing?.currentPartnerId ?? null,
+      selectedPhase: existing?.selectedPhase,
+      desiredExperiences: exps as any,
+      dateStartISO: existing?.dateStartISO,
+    });
+    await AsyncStorage.setItem(KEYS.session, JSON.stringify(merged));
+  }
+
+  async updateDateStartISO(iso: string): Promise<void> {
+    const existing = await this.getSession();
+    const merged: Session = SessionSchema.parse({
+      id: existing?.id ?? 'session-1',
+      createdAt: existing?.createdAt ?? Date.now(),
+      lastActiveAt: Date.now(),
+      currentPartnerId: existing?.currentPartnerId ?? null,
+      selectedPhase: existing?.selectedPhase,
+      desiredExperiences: existing?.desiredExperiences ?? [],
+      dateStartISO: iso,
+    });
+    await AsyncStorage.setItem(KEYS.session, JSON.stringify(merged));
   }
 }
 

@@ -57,11 +57,24 @@ export const RecommendationSchema = z.object({
 });
 export type Recommendation = z.infer<typeof RecommendationSchema>;
 
+export const DateExperienceSchema = z.enum([
+  'Romantic',
+  'Fun Night',
+  'Deep Talk',
+  'Impress',
+  'Surprise Me',
+  'Outdoors',
+  'Low-key',
+]);
+export type DateExperience = z.infer<typeof DateExperienceSchema>;
+
 export const SessionSchema = z.object({
   id: z.string().min(1),
   createdAt: z.number(),
   lastActiveAt: z.number(),
   currentPartnerId: z.string().optional().nullable(),
   selectedPhase: RelationshipPhaseSchema.optional(),
+  desiredExperiences: z.array(DateExperienceSchema).optional().default([]),
+  dateStartISO: z.string().datetime().optional(),
 });
 export type Session = z.infer<typeof SessionSchema>;
