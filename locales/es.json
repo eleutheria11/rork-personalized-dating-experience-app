@@ -18,7 +18,7 @@
     "choosePhase": "Elige la fase de relación",
     "addPartner": "Agregar perfil de pareja",
     "quickActions": "Acciones rápidas",
-    "aiAssistant": "Asistente de reservas IA",
+    "aiAssistant": "Guía de Citas",
     "planningFor": "Planificando para",
     "budget": "Presupuesto {{budget}}"
   },
@@ -43,7 +43,7 @@
     "past": "Citas pasadas"
   },
   "onboarding": {
-    "welcomeTitle": "Bienvenido a DateSpark 💕",
+    "welcomeTitle": "Bienvenido a Kizzra 💕",
     "welcomeSubtitle": "Tu compañero de citas con IA",
     "welcomeDesc": "Obtén recomendaciones personalizadas según tu fase de relación, preferencias y presupuesto.",
     "getStarted": "Comenzar",
