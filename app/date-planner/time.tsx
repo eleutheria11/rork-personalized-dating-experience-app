@@ -14,15 +14,7 @@ function formatTimeZoneOffset(date: Date): string {
 }
 
 function toZonedISOString(date: Date): string {
-  const pad = (n: number, l: number = 2) => n.toString().padStart(l, '0');
-  const y = date.getFullYear();
-  const m = pad(date.getMonth() + 1);
-  const d = pad(date.getDate());
-  const hh = pad(date.getHours());
-  const mm = pad(date.getMinutes());
-  const ss = pad(date.getSeconds());
-  const ms = pad(date.getMilliseconds(), 3);
-  return `${y}-${m}-${d}T${hh}:${mm}:${ss}.${ms}${formatTimeZoneOffset(date)}`;
+  return date.toISOString();
 }
 
 export default function DateTimeScreen() {
