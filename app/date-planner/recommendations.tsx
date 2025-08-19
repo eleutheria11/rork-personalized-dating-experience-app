@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { adapter } from '@/data';
-import { RecommendationSchema, type Recommendation, type Session } from '@/types/schemas';
-import { Clock, DollarSign, MapPin, Sparkles, RefreshCw, SlidersHorizontal, CheckCircle2, HelpCircle } from 'lucide-react-native';
+import { RecommendationSchema, type Recommendation, type Session, type User } from '@/types/schemas';
+import { Clock, DollarSign, MapPin, Sparkles, RefreshCw, SlidersHorizontal, CheckCircle2, HelpCircle, Bot } from 'lucide-react-native';
 import { INTERESTS_OPTIONS } from '@/constants/interests';
 import { GUIDE_ENABLED } from '@/constants/flags';
 import { buildGuide, type GuideFilters } from '@/lib/dateGuide';
@@ -14,66 +14,81 @@ type Filters = GuideFilters;
 const GOALS: Filters['goal'][] = ['Impress', 'Fun Night', 'Deep Talk', 'Romantic', 'Surprise Me', 'Any'];
 const BUDGETS: Filters['budget'][] = ['$', '$$', '$$-$$$', '$$$', 'Any'];
 
-function buildStubRecommendations(session: Session | null, filters: Filters): Recommendation[] {
+function buildPersonalizedRecommendations(session: Session | null, filters: Filters, user: User | null): Recommendation[] {
+  const city = user?.preferences?.city ?? 'Downtown';
+  const likes = (filters.likes ?? []).map((l) => l.toLowerCase());
+  const budget = filters.budget;
+
   const base: Recommendation[] = [
     {
       id: 'rec-1',
-      title: 'Cozy Italian Dinner',
-      description: 'A romantic trattoria with candlelight and fresh pasta.',
-      location: 'Downtown',
+      title: likes.includes('pasta') || likes.includes('italian') ? 'Cozy Italian Dinner' : 'Modern Bistro Date',
+      description: 'A romantic spot with great ambiance and fresh dishes.',
+      location: city,
       estimatedCost: '$$',
       bestTime: '7:00 PM',
       tips: 'Ask for a corner table.',
       address: '123 Main St',
-      reservationUrl: 'https://example.com/reserve'
+      reservationUrl: 'https://example.com/reserve',
     },
     {
       id: 'rec-2',
-      title: 'Rooftop Cocktails',
+      title: likes.includes('cocktails') ? 'Rooftop Cocktails' : 'Skyline Lounge',
       description: 'Chic lounge with skyline views and live DJ.',
-      location: 'Midtown',
+      location: city,
       estimatedCost: '$$-$$$',
       bestTime: '9:00 PM',
     },
     {
       id: 'rec-3',
-      title: 'Sunset Walk in the Park',
+      title: likes.includes('outdoors') || likes.includes('walk') ? 'Sunset Walk in the Park' : 'Scenic Park Stroll',
       description: 'Scenic trail perfect for deep conversation.',
-      location: 'City Park',
+      location: `${city} Park`,
       estimatedCost: '$',
       bestTime: '6:30 PM',
-      tips: 'Bring a light jacket.'
+      tips: 'Bring a light jacket.',
     },
     {
       id: 'rec-4',
-      title: 'Speakeasy Dessert Bar',
+      title: likes.includes('dessert') ? 'Speakeasy Dessert Bar' : 'Secret Sweet Bar',
       description: 'Secret spot with craft desserts and mocktails.',
-      location: 'Old Town',
+      location: city,
       estimatedCost: '$$',
       bestTime: '10:00 PM',
     },
     {
       id: 'rec-5',
-      title: 'Museum Late Night',
+      title: likes.includes('art') || likes.includes('museum') ? 'Museum Late Night' : 'Gallery After Dark',
       description: 'After-hours art exhibit with live quartet.',
-      location: 'Arts District',
+      location: `${city} Arts District`,
       estimatedCost: '$$-$$$',
       bestTime: '8:00 PM',
     },
   ];
-  try { RecommendationSchema.array().parse(base); } catch {}
+
+  try {
+    RecommendationSchema.array().parse(base);
+  } catch {}
+
+  const budgetRank: Record<'$' | '$$' | '$$-$$$' | '$$$', number> = { '$': 1, '$$': 2, '$$-$$$': 3, '$$$': 4 };
 
   const filtered = base.filter((r) => {
-    const budgetOk = filters.budget === 'Any' ? true : r.estimatedCost === filters.budget || (filters.budget === '$$-$$$' && r.estimatedCost === '$$-$$$');
-    const likesOk = filters.likes.length === 0 ? true : filters.likes.some((l) => r.title.toLowerCase().includes(l.toLowerCase()) || (r.description?.toLowerCase().includes(l.toLowerCase()) ?? false));
+    const budgetOk = budget === 'Any' ? true : budgetRank[r.estimatedCost as '$' | '$$' | '$$-$$$' | '$$$'] <= (budgetRank[budget as '$' | '$$' | '$$-$$$' | '$$$'] ?? 4);
+    const likesOk = likes.length === 0 ? true : likes.some((l) => r.title.toLowerCase().includes(l) || (r.description?.toLowerCase().includes(l) ?? false));
     return budgetOk && likesOk;
   });
-  return filtered;
+
+  const withAddress = filtered.map((r) => ({
+    ...r,
+    address: r.address ?? `${r.location}`,
+  }));
+  return withAddress;
 }
 
 export default function RecommendationsScreen() {
   const router = useRouter();
   const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [recs, setRecs] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -83,27 +98,36 @@ export default function RecommendationsScreen() {
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const s = await adapter.getSession();
+      const [s, u] = await Promise.all([adapter.getSession(), adapter.getUser()]);
       if (!mounted) return;
       setSession(s);
-      const list = buildStubRecommendations(s, filters);
+      setUser(u);
+      const initial: Filters = {
+        budget: (u?.preferences?.budget as Filters['budget']) ?? 'Any',
+        goal: (s?.desiredExperiences?.find((g) => ['Impress', 'Fun Night', 'Deep Talk', 'Romantic', 'Surprise Me'].includes(g)) as Filters['goal']) ?? 'Any',
+        likes: Array.from(new Set([...(u?.preferences?.likes ?? []), ...(s?.desiredExperiences ?? [])])) as string[],
+      };
+      setFilters(initial);
+      const list = buildPersonalizedRecommendations(s, initial, u);
       setRecs(list);
       setLoading(false);
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
-    const list = buildStubRecommendations(session, filters);
+    const list = buildPersonalizedRecommendations(session, filters, user);
     setRecs(list);
-  }, [filters, session]);
+  }, [filters, session, user]);
 
   const onUse = useCallback(async (rec: Recommendation) => {
     await adapter.addRecommendations([rec]);
   }, []);
 
   const toggleSelect = useCallback((id: string) => {
-    setSelectedIds((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   }, []);
 
   const canOrganize = useMemo(() => selectedIds.length >= 2, [selectedIds]);
@@ -115,17 +139,26 @@ export default function RecommendationsScreen() {
   }, [recs, selectedIds, router]);
 
   const onMore = useCallback(() => {
-    const more = buildStubRecommendations(session, filters).map((r) => ({ ...r, id: `${r.id}-m${Math.floor(Math.random()*10000)}` }));
+    const more = buildPersonalizedRecommendations(session, filters, user).map((r) => ({ ...r, id: `${r.id}-m${Math.floor(Math.random() * 10000)}` }));
     setRecs((prev) => [...prev, ...more]);
-  }, [session, filters]);
+  }, [session, filters, user]);
 
   const toggleFilter = useCallback(<T extends string>(type: 'goal' | 'budget', value: T) => {
-    setFilters((prev) => ({ ...prev, [type]: prev[type as keyof Filters] === value ? 'Any' : (value as any) }));
+    setFilters((prev) => ({ ...prev, [type]: (prev as any)[type] === value ? 'Any' : (value as any) }));
   }, []);
 
   const toggleLike = useCallback((like: string) => {
     setFilters((prev) => ({ ...prev, likes: prev.likes.includes(like) ? prev.likes.filter((l) => l !== like) : [...prev.likes, like] }));
   }, []);
+
+  const onAskGuru = useCallback((rec?: Recommendation) => {
+    try {
+      const details = rec ? encodeURIComponent(JSON.stringify(rec)) : '';
+      router.push({ pathname: '/booking-assistant', params: details ? { dateDetails: details } : {} } as any);
+    } catch (e) {
+      console.log('[recs] ask guru error', e);
+    }
+  }, [router]);
 
   return (
     <View style={styles.container} testID="recs-screen">
@@ -180,10 +213,16 @@ export default function RecommendationsScreen() {
                         })()}
                       </View>
                     )}
-                    <TouchableOpacity style={styles.useBtn} onPress={() => onUse(rec)} testID={`use-${rec.id}`}>
-                      <Sparkles size={18} color="#E91E63" />
-                      <Text style={styles.useText}>Use this</Text>
-                    </TouchableOpacity>
+                    <View style={styles.cardActions}>
+                      <TouchableOpacity style={styles.useBtn} onPress={() => onUse(rec)} testID={`use-${rec.id}`}>
+                        <Sparkles size={18} color="#E91E63" />
+                        <Text style={styles.useText}>Use this</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.assistBtn} onPress={() => onAskGuru(rec)} testID={`guru-${rec.id}`}>
+                        <Bot size={18} color="#fff" />
+                        <Text style={styles.assistText}>Ask Date Guru</Text>
+                      </TouchableOpacity>
+                    </View>
                   </LinearGradient>
                 </TouchableOpacity>
               );
@@ -200,6 +239,10 @@ export default function RecommendationsScreen() {
         <TouchableOpacity style={styles.secondaryBtn} onPress={() => setShowFilters(true)} testID="cta-edit">
           <SlidersHorizontal size={18} color="#E91E63" />
           <Text style={styles.secondaryText}>Edit Preferences</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.secondaryBtn} onPress={() => onAskGuru()} testID="cta-guru">
+          <Bot size={18} color="#E91E63" />
+          <Text style={styles.secondaryText}>Ask Date Guru</Text>
         </TouchableOpacity>
         {canOrganize && (
           <TouchableOpacity style={styles.primaryBtn} onPress={onOrganize} testID="cta-organize">
@@ -272,6 +315,9 @@ const styles = StyleSheet.create({
   metaText: { color: '#fff' },
   useBtn: { backgroundColor: '#fff', paddingVertical: 10, paddingHorizontal: 12, borderRadius: 12, alignSelf: 'flex-start', flexDirection: 'row', gap: 8 },
   useText: { color: '#E91E63', fontWeight: '700' },
+  cardActions: { flexDirection: 'row', gap: 8, marginTop: 8 },
+  assistBtn: { backgroundColor: '#111827', paddingVertical: 10, paddingHorizontal: 12, borderRadius: 12, alignSelf: 'flex-start', flexDirection: 'row', gap: 8 },
+  assistText: { color: '#fff', fontWeight: '700' },
   bottomBar: { position: 'absolute', left: 0, right: 0, bottom: 0, padding: 12, backgroundColor: '#ffffffEE', flexDirection: 'row', alignItems: 'center', gap: 10 },
   secondaryBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#FDF2F8', paddingVertical: 10, paddingHorizontal: 12, borderRadius: 12 },
   secondaryText: { color: '#E91E63', fontWeight: '700' },
