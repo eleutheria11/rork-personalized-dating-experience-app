@@ -88,7 +88,7 @@ export default function OnboardingScreen() {
       case "welcome":
         return (
           <View style={styles.stepContainer}>
-            <Text style={styles.welcomeTitle}>Welcome to DateSpark 💕</Text>
+            <Text style={styles.welcomeTitle}>Welcome to Kizzra 💕</Text>
             <Text style={styles.welcomeSubtitle}>
               Your AI-powered dating companion
             </Text>
