@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
-export const RelationshipPhaseSchema = z.enum(["beginning", "courtship", "dating", "reconciliation"]);
+export const RelationshipPhaseSchema = z.enum([
+  'beginning',
+  'courting',
+  'exclusive',
+  'casual',
+  'patching',
+]);
 export type RelationshipPhase = z.infer<typeof RelationshipPhaseSchema>;
 
 export const PreferencesSchema = z.object({
@@ -32,6 +38,7 @@ export const PartnerProfileSchema = z.object({
   description: z.string().optional().default(''),
   likes: z.array(z.string()).default([]),
   socialProfiles: z.string().url().optional(),
+  relationshipPhase: RelationshipPhaseSchema.optional(),
   isDeleted: z.boolean().default(false),
   deletedAt: z.number().nullable().optional(),
 });
@@ -55,6 +62,6 @@ export const SessionSchema = z.object({
   createdAt: z.number(),
   lastActiveAt: z.number(),
   currentPartnerId: z.string().optional().nullable(),
-  selectedPhase: z.enum(["beginning", "courtship", "dating", "reconciliation"]).optional(),
+  selectedPhase: RelationshipPhaseSchema.optional(),
 });
 export type Session = z.infer<typeof SessionSchema>;

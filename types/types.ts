@@ -10,8 +10,8 @@ export interface UserProfile {
   dislikes: string[];
 }
 
-export type RelationshipPhase = "beginning" | "courtship" | "dating" | "reconciliation";
-export type DateGoal = "impress" | "fun" | "conversation" | "random";
+export type RelationshipPhase = 'beginning' | 'courting' | 'exclusive' | 'casual' | 'patching';
+export type DateGoal = 'impress' | 'fun' | 'conversation' | 'random';
 
 export interface DateRecommendation {
   id?: string;
