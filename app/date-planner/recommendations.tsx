@@ -4,14 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { adapter } from '@/data';
 import { RecommendationSchema, type Recommendation, type Session } from '@/types/schemas';
-import { Clock, DollarSign, MapPin, Sparkles, RefreshCw, SlidersHorizontal, CheckCircle2 } from 'lucide-react-native';
+import { Clock, DollarSign, MapPin, Sparkles, RefreshCw, SlidersHorizontal, CheckCircle2, HelpCircle } from 'lucide-react-native';
 import { INTERESTS_OPTIONS } from '@/constants/interests';
+import { GUIDE_ENABLED } from '@/constants/flags';
+import { buildGuide, type GuideFilters } from '@/lib/dateGuide';
 
-type Filters = {
-  budget: '$' | '$$' | '$$-$$$' | '$$$' | 'Any';
-  goal: 'Impress' | 'Fun Night' | 'Deep Talk' | 'Romantic' | 'Surprise Me' | 'Any';
-  likes: string[];
-};
+type Filters = GuideFilters;
 
 const GOALS: Filters['goal'][] = ['Impress', 'Fun Night', 'Deep Talk', 'Romantic', 'Surprise Me', 'Any'];
 const BUDGETS: Filters['budget'][] = ['$', '$$', '$$-$$$', '$$$', 'Any'];
@@ -165,6 +163,23 @@ export default function RecommendationsScreen() {
                       <View style={styles.metaItem}><DollarSign size={14} color="#fff" /><Text style={styles.metaText}>{rec.estimatedCost}</Text></View>
                       <View style={styles.metaItem}><Clock size={14} color="#fff" /><Text style={styles.metaText}>{rec.bestTime}</Text></View>
                     </View>
+                    {GUIDE_ENABLED && (
+                      <View style={styles.guideBox} testID={`guide-${rec.id}`}>
+                        <View style={styles.guideHeader}>
+                          <HelpCircle size={16} color="#111" />
+                          <Text style={styles.guideTitle}>Date Guide</Text>
+                        </View>
+                        {(() => {
+                          const g = buildGuide(rec, filters, session);
+                          return (
+                            <View>
+                              <Text style={styles.guideWhy}>{g.why}</Text>
+                              <Text style={styles.guideTweak}>{g.tweak}</Text>
+                            </View>
+                          );
+                        })()}
+                      </View>
+                    )}
                     <TouchableOpacity style={styles.useBtn} onPress={() => onUse(rec)} testID={`use-${rec.id}`}>
                       <Sparkles size={18} color="#E91E63" />
                       <Text style={styles.useText}>Use this</Text>
@@ -275,4 +290,9 @@ const styles = StyleSheet.create({
   chipTextActive: { color: '#E91E63' },
   modalClose: { alignSelf: 'stretch', margin: 16, paddingVertical: 12, backgroundColor: '#111', borderRadius: 12, alignItems: 'center' },
   modalCloseText: { color: '#fff', fontWeight: '700' },
+  guideBox: { backgroundColor: '#fff', borderRadius: 12, padding: 10, marginBottom: 10, borderWidth: 1, borderColor: '#F3F4F6' },
+  guideHeader: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 },
+  guideTitle: { fontWeight: '800', color: '#111' },
+  guideWhy: { color: '#111' },
+  guideTweak: { color: '#111', opacity: 0.8, marginTop: 4 },
 });

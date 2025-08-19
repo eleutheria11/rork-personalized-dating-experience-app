@@ -40,7 +40,7 @@ function RootLayoutNav() {
       <Stack.Screen 
         name="booking-assistant" 
         options={{ 
-          title: "Booking Assistant",
+          title: "Date Guide",
           presentation: "modal"
         }} 
       />

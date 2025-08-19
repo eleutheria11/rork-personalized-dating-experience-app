@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { GUIDE_ENABLED } from "@/constants/flags";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 import { X, Send, Bot, User } from "lucide-react-native";
@@ -40,7 +41,7 @@ export default function BookingAssistantScreen() {
       role: "assistant",
       content: parsedDate
         ? `I'll help you with "${parsedDate?.title}" at ${parsedDate?.location}. Do you want me to book a reservation, arrange transportation, or look for deals?`
-        : "Hi! I'm your AI booking assistant. I can help you make reservations, get transportation, find discounts, and suggest the best times to go. What can I help you with today?",
+        : "Hi! I'm your Date Guide. I can help you make reservations, get transportation, find discounts, and suggest the best times to go. What can I help you with today?",
     },
   ]);
   const [inputText, setInputText] = useState("");
@@ -94,6 +95,23 @@ export default function BookingAssistantScreen() {
     sendMessage.mutate(text);
   };
 
+  if (!GUIDE_ENABLED) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.closeButton} onPress={() => router.back()} activeOpacity={0.7}>
+            <X size={24} color="#333" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Date Guide</Text>
+          <View style={{ width: 40 }} />
+        </View>
+        <View style={{ padding: 20 }}>
+          <Text style={{ color: '#666' }}>Date Guide is currently disabled.</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
@@ -109,7 +127,7 @@ export default function BookingAssistantScreen() {
         >
           <X size={24} color="#333" />
         </TouchableOpacity>
-        <Text style={styles.title}>AI Assistant</Text>
+        <Text style={styles.title}>Date Guide</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -195,7 +213,7 @@ export default function BookingAssistantScreen() {
           {sendMessage.isPending && (
             <View style={styles.loadingContainer}>
               <ActivityIndicator color="#E91E63" />
-              <Text style={styles.loadingText}>Assistant is typing...</Text>
+              <Text style={styles.loadingText}>Guide is typing...</Text>
             </View>
           )}
         </ScrollView>
@@ -218,7 +236,7 @@ export default function BookingAssistantScreen() {
             style={styles.input}
             value={inputText}
             onChangeText={setInputText}
-            placeholder="Ask me anything about bookings..."
+            placeholder="Ask me anything about your date..."
             placeholderTextColor="#999"
             multiline
             onFocus={() => {
