@@ -78,7 +78,7 @@ export default function ProfileScreen() {
             <View style={styles.infoRow}>
               <MapPin size={20} color="#E91E63" />
               <Text style={styles.infoText}>
-                {profile?.city}, {profile?.state}
+                {profile?.city}, {profile?.zipCode} • {profile?.country}
               </Text>
             </View>
             <View style={styles.divider} />

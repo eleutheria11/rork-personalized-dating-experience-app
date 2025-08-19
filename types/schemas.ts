@@ -4,9 +4,9 @@ export const RelationshipPhaseSchema = z.enum(["beginning", "courtship", "dating
 export type RelationshipPhase = z.infer<typeof RelationshipPhaseSchema>;
 
 export const PreferencesSchema = z.object({
+  country: z.string().min(1),
   city: z.string().min(1),
-  state: z.string().min(1).max(2),
-  zipCode: z.string().regex(/^[0-9]{5}(-[0-9]{4})?$/),
+  zipCode: z.string().min(1),
   budget: z.string().min(1),
   likes: z.array(z.string()).default([]),
   dislikes: z.array(z.string()).default([]),

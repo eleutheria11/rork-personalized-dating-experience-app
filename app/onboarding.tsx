@@ -10,12 +10,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useUserProfile } from "@/contexts/UserProfileContext";
 import { ChevronRight, ChevronLeft } from "lucide-react-native";
 import { INTERESTS_OPTIONS } from "@/constants/interests";
+import { COMMON_COUNTRIES } from "@/constants/countries";
 
 const { width } = Dimensions.get("window");
 
@@ -28,8 +30,8 @@ export default function OnboardingScreen() {
     name: profile?.name || "",
     age: profile?.age || "",
     gender: profile?.gender || "",
+    country: profile?.country || "",
     city: profile?.city || "",
-    state: profile?.state || "",
     zipCode: profile?.zipCode || "",
     budget: profile?.budget || "medium",
     likes: profile?.likes || [],
@@ -43,6 +45,7 @@ export default function OnboardingScreen() {
   }, []);
 
   const handleNext = () => {
+    Keyboard.dismiss();
     const steps: OnboardingStep[] = ["welcome", "basic", "location", "likes", "dislikes", "complete"];
     const currentIndex = steps.indexOf(currentStep);
     if (currentIndex < steps.length - 1) {
@@ -51,6 +54,7 @@ export default function OnboardingScreen() {
   };
 
   const handleBack = () => {
+    Keyboard.dismiss();
     const steps: OnboardingStep[] = ["welcome", "basic", "location", "likes", "dislikes", "complete"];
     const currentIndex = steps.indexOf(currentStep);
     if (currentIndex > 0) {
@@ -59,6 +63,7 @@ export default function OnboardingScreen() {
   };
 
   const handleComplete = async () => {
+    Keyboard.dismiss();
     await updateProfile(formData);
     router.replace("/(tabs)");
   };
@@ -198,36 +203,65 @@ export default function OnboardingScreen() {
             <Text style={styles.stepSubtitle}>Help us find the best spots</Text>
             
             <View style={styles.inputGroup}>
+              <Text style={styles.label}>Country</Text>
+              <View>
+                <TextInput
+                  testID="country-input"
+                  style={styles.input}
+                  value={formData.country}
+                  onChangeText={(text) => setFormData({ ...formData, country: text })}
+                  placeholder="Search or enter your country"
+                  placeholderTextColor="#999"
+                  returnKeyType="next"
+                />
+                {formData.country?.length > 0 && (
+                  <View style={styles.suggestionsBox}>
+                    {COMMON_COUNTRIES.filter(c => c.toLowerCase().includes(formData.country.toLowerCase())).slice(0,5).map((c) => (
+                      <TouchableOpacity key={c} style={styles.suggestionItem} onPress={() => setFormData({ ...formData, country: c })}>
+                        <Text style={styles.suggestionText}>{c}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+            </View>
+
+            <View style={styles.inputGroup}>
               <Text style={styles.label}>City</Text>
-              <TextInput
-                style={styles.input}
-                value={formData.city}
-                onChangeText={(text) => setFormData({ ...formData, city: text })}
-                placeholder="Enter your city"
-                placeholderTextColor="#999"
-              />
+              <View>
+                <TextInput
+                  testID="city-input"
+                  style={styles.input}
+                  value={formData.city}
+                  onChangeText={(text) => setFormData({ ...formData, city: text })}
+                  placeholder="Enter your city"
+                  placeholderTextColor="#999"
+                  returnKeyType="next"
+                />
+                {formData.city?.length > 1 && (
+                  <View style={styles.suggestionsBox}>
+                    {["Downtown", "Midtown", "Uptown", "Old Town", "Riverside"].filter(c => c.toLowerCase().includes(formData.city.toLowerCase())).slice(0,5).map((c) => (
+                      <TouchableOpacity key={c} style={styles.suggestionItem} onPress={() => setFormData({ ...formData, city: c })}>
+                        <Text style={styles.suggestionText}>{c}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>State</Text>
+              <Text style={styles.label}>Zip / Postal Code</Text>
               <TextInput
-                style={styles.input}
-                value={formData.state}
-                onChangeText={(text) => setFormData({ ...formData, state: text })}
-                placeholder="Enter your state"
-                placeholderTextColor="#999"
-              />
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Zip Code</Text>
-              <TextInput
+                testID="zip-input"
                 style={styles.input}
                 value={formData.zipCode}
                 onChangeText={(text) => setFormData({ ...formData, zipCode: text })}
-                placeholder="Enter your zip"
-                keyboardType="numeric"
+                placeholder="Enter your postal code"
                 placeholderTextColor="#999"
+                returnKeyType="done"
+                onSubmitEditing={handleNext}
+                blurOnSubmit
               />
             </View>
 
@@ -274,7 +308,7 @@ export default function OnboardingScreen() {
                 style={styles.primaryButton}
                 onPress={handleNext}
                 activeOpacity={0.8}
-                disabled={!formData.city || !formData.state || !formData.zipCode}
+                disabled={!formData.country || !formData.city || !formData.zipCode}
               >
                 <LinearGradient
                   colors={["#E91E63", "#F06292"]}
@@ -440,10 +474,18 @@ export default function OnboardingScreen() {
         style={StyleSheet.absoluteFillObject}
       />
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={styles.keyboardView}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
       >
-        {renderStep()}
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {renderStep()}
+          <View style={{ height: 24 }} />
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -455,6 +497,11 @@ const styles = StyleSheet.create({
   },
   keyboardView: {
     flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 0,
   },
   stepContainer: {
     flex: 1,
@@ -509,6 +556,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: "#E0E0E0",
+  },
+  suggestionsBox: {
+    position: "absolute",
+    top: 58,
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#eee",
+    borderRadius: 12,
+    overflow: "hidden",
+    zIndex: 10,
+  },
+  suggestionItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f2f2f2",
+  },
+  suggestionText: {
+    fontSize: 14,
+    color: "#333",
   },
   genderOptions: {
     flexDirection: "row",

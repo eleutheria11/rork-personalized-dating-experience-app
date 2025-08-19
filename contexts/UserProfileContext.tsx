@@ -8,9 +8,9 @@ const UserProfileZ = z.object({
   name: z.string().min(1),
   age: z.string().min(1),
   gender: z.string().min(1),
+  country: z.string().min(1),
   city: z.string().min(1),
-  state: z.string().min(1),
-  zipCode: z.string().regex(/^[0-9]{5}(-[0-9]{4})?$/),
+  zipCode: z.string().min(1),
   budget: z.string().min(1),
   likes: z.array(z.string()).default([]),
   dislikes: z.array(z.string()).default([]),
@@ -41,8 +41,8 @@ export const [UserProfileProvider, useUserProfile] = createContextHook<Ctx>(() =
           name: user.name,
           age: String(user.age ?? ""),
           gender: user.gender,
+          country: (user as any).preferences?.country ?? (user as any).country ?? "",
           city: user.preferences.city,
-          state: user.preferences.state,
           zipCode: user.preferences.zipCode,
           budget: user.preferences.budget,
           likes: user.preferences.likes ?? [],
@@ -74,8 +74,8 @@ export const [UserProfileProvider, useUserProfile] = createContextHook<Ctx>(() =
       name: "",
       age: "",
       gender: "",
+      country: "",
       city: "",
-      state: "",
       zipCode: "",
       budget: "",
       likes: [],
@@ -90,8 +90,8 @@ export const [UserProfileProvider, useUserProfile] = createContextHook<Ctx>(() =
       age: validated.age,
       gender: validated.gender,
       preferences: {
+        country: validated.country,
         city: validated.city,
-        state: validated.state,
         zipCode: validated.zipCode,
         budget: validated.budget,
         likes: validated.likes,
@@ -118,8 +118,8 @@ export const [UserProfileProvider, useUserProfile] = createContextHook<Ctx>(() =
       profile?.name &&
       profile?.age &&
       profile?.gender &&
+      profile?.country &&
       profile?.city &&
-      profile?.state &&
       profile?.zipCode &&
       (profile?.likes?.length ?? 0) > 0
     );

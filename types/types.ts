@@ -2,8 +2,8 @@ export interface UserProfile {
   name: string;
   age: string;
   gender: string;
+  country: string;
   city: string;
-  state: string;
   zipCode: string;
   budget: string;
   likes: string[];
