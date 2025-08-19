@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, ScrollView, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { adapter } from '@/data';
@@ -141,6 +141,7 @@ export default function DateTimeScreen() {
 
       <Modal visible={showDate} transparent animationType="slide" onRequestClose={() => setShowDate(false)}>
         <View style={styles.modalBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => setShowDate(false)} testID="backdrop-date" />
           <View style={styles.modalCard}>
             <Text style={styles.modalTitle}>Select a date</Text>
             <ScrollView style={styles.modalScroll} contentContainerStyle={styles.modalScrollContent}>
@@ -170,6 +171,7 @@ export default function DateTimeScreen() {
 
       <Modal visible={showTime} transparent animationType="slide" onRequestClose={() => setShowTime(false)}>
         <View style={styles.modalBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => setShowTime(false)} testID="backdrop-time" />
           <View style={styles.modalCard}>
             <Text style={styles.modalTitle}>Select a time</Text>
             <View style={styles.timeGrid}>
@@ -177,7 +179,7 @@ export default function DateTimeScreen() {
                 {hours.map((h) => (
                   <TouchableOpacity key={h} style={styles.modalItem} onPress={() => {
                     const updated = new Date(when);
-                    updated.setHours(h);
+                    updated.setHours(h, updated.getMinutes(), 0, 0);
                     setWhen(updated);
                   }} testID={`pick-hour-${h}`}>
                     <Text style={styles.modalItemText}>{h.toString().padStart(2, '0')}</Text>
@@ -188,7 +190,7 @@ export default function DateTimeScreen() {
                 {minutes.map((m) => (
                   <TouchableOpacity key={m} style={styles.modalItem} onPress={() => {
                     const updated = new Date(when);
-                    updated.setMinutes(m);
+                    updated.setMinutes(m, 0, 0);
                     setWhen(updated);
                   }} testID={`pick-minute-${m}`}>
                     <Text style={styles.modalItemText}>{m.toString().padStart(2, '0')}</Text>
