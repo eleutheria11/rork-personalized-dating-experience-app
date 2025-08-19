@@ -2,8 +2,10 @@ import { Tabs } from "expo-router";
 import { Heart, User, Calendar, Settings } from "lucide-react-native";
 import React from "react";
 import { Platform } from "react-native";
+import { useTranslation } from 'react-i18next';
 
 export default function TabLayout() {
+  const { t } = useTranslation();
   return (
     <Tabs
       screenOptions={{
@@ -27,28 +29,28 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Discover",
+          title: t('tabs.discover'),
           tabBarIcon: ({ color }) => <Heart size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="partners"
         options={{
-          title: "Partners",
+          title: t('tabs.partners'),
           tabBarIcon: ({ color }) => <User size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="dates"
         options={{
-          title: "My Dates",
+          title: t('tabs.dates'),
           tabBarIcon: ({ color }) => <Calendar size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: t('tabs.profile'),
           tabBarIcon: ({ color }) => <Settings size={24} color={color} />,
         }}
       />

@@ -1,0 +1,100 @@
+{
+  "common": {
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "close": "Close",
+    "saving": "Saving..."
+  },
+  "tabs": {
+    "discover": "Discover",
+    "partners": "Partners",
+    "dates": "My Dates",
+    "profile": "Profile"
+  },
+  "home": {
+    "hello": "Hello, {{name}}! 💕",
+    "letsPlan": "Let's plan something special",
+    "choosePhase": "Choose Relationship Phase",
+    "addPartner": "Add Partner Profile",
+    "quickActions": "Quick Actions",
+    "aiAssistant": "AI Booking Assistant",
+    "planningFor": "Planning for",
+    "budget": "{{budget}} Budget"
+  },
+  "profile": {
+    "deleteTitle": "Delete My Data",
+    "deleteBody": "This will permanently delete all local data on this device. This cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "locationBudget": "Location & Budget",
+    "myInterests": "My Interests",
+    "likes": "Likes",
+    "dislikes": "Dislikes",
+    "settings": "Settings",
+    "editProfile": "Edit Profile",
+    "paymentMethods": "Payment Methods",
+    "savedPasswords": "Saved Passwords"
+  },
+  "dates": {
+    "title": "My Dates",
+    "subtitle": "Track your romantic adventures",
+    "upcoming": "Upcoming",
+    "past": "Past Dates"
+  },
+  "onboarding": {
+    "welcomeTitle": "Welcome to DateSpark 💕",
+    "welcomeSubtitle": "Your AI-powered dating companion",
+    "welcomeDesc": "Get personalized date recommendations tailored to your relationship phase, preferences, and budget.",
+    "getStarted": "Get Started",
+    "tellUs": "Tell us about yourself",
+    "basicInfo": "Basic information",
+    "name": "Name",
+    "namePh": "Enter your name",
+    "age": "Age",
+    "agePh": "Enter your age",
+    "gender": "Gender",
+    "back": "Back",
+    "locationBudget": "Location & Budget",
+    "helpFind": "Help us find the best spots",
+    "country": "Country",
+    "countryPh": "Search or enter your country",
+    "city": "City",
+    "cityPh": "Enter your city",
+    "zip": "Zip / Postal Code",
+    "zipPh": "Enter your postal code",
+    "budget": "Budget",
+    "low": "Low ($)",
+    "medium": "Medium ($$)",
+    "high": "High ($$$)",
+    "whatEnjoy": "What do you enjoy?",
+    "selectInterests": "Select your interests (rank by preference)",
+    "whatAvoid": "What to avoid?",
+    "selectAvoid": "Select things you'd rather skip",
+    "allSet": "All Set! 🎉",
+    "profileReady": "Your profile is ready",
+    "startDating": "Start Dating"
+  },
+  "planner": {
+    "experienceTitle": "What kind of date experience do you want?",
+    "experienceSub": "Pick one or more",
+    "timeTitle": "What time does your date start?",
+    "timeSub": "Pick a date and start time",
+    "date": "Date",
+    "time": "Time",
+    "quick": ["Tonight 7:00", "Tomorrow 7:00", "This Weekend 6:00"],
+    "selectDate": "Select a date",
+    "selectTime": "Select a time",
+    "recommendations": "Recommendations",
+    "basedOn": "Based on your picks",
+    "giveMeMore": "Give me more",
+    "editPreferences": "Edit Preferences",
+    "organize": "Organize my Date",
+    "budget": "Budget",
+    "goal": "Goal",
+    "likes": "Likes"
+  },
+  "guide": {
+    "title": "Date Guide"
+  }
+}

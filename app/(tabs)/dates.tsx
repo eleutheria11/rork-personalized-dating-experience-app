@@ -10,8 +10,10 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Calendar, MapPin, DollarSign, Clock, Heart } from "lucide-react-native";
+import { useTranslation } from 'react-i18next';
 
 export default function DatesScreen() {
+  const { t } = useTranslation();
   const upcomingDates = [
     {
       id: "1",
@@ -20,7 +22,7 @@ export default function DatesScreen() {
       date: "Dec 15, 2024",
       time: "7:00 PM",
       location: "The French Laundry",
-      price: "$$$",
+      price: "$$",
       phase: "courtship",
     },
     {
@@ -30,7 +32,7 @@ export default function DatesScreen() {
       date: "Dec 20, 2024",
       time: "2:00 PM",
       location: "Napa Valley",
-      price: "$$",
+      price: "$",
       phase: "dating",
     },
   ];
@@ -58,14 +60,14 @@ export default function DatesScreen() {
       
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>My Dates</Text>
+          <Text style={styles.title}>{t('dates.title')}</Text>
           <Text style={styles.subtitle}>
-            Track your romantic adventures
+            {t('dates.subtitle')}
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Upcoming</Text>
+          <Text style={styles.sectionTitle}>{t('dates.upcoming')}</Text>
           {upcomingDates.map((date) => (
             <TouchableOpacity
               key={date.id}
@@ -105,7 +107,7 @@ export default function DatesScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Past Dates</Text>
+          <Text style={styles.sectionTitle}>{t('dates.past')}</Text>
           {pastDates.map((date) => (
             <View key={date.id} style={styles.pastDateCard}>
               <View style={styles.pastDateHeader}>

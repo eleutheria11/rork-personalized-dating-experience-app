@@ -15,6 +15,7 @@ import { useUserProfile } from "@/contexts/UserProfileContext";
 import { usePartners } from "@/contexts/PartnersContext";
 import { Heart, Gift, MessageCircle, Sparkles, Plus, MapPin, DollarSign } from "lucide-react-native";
 import { RelationshipPhase } from "@/types/types";
+import { useTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get("window");
 
@@ -56,6 +57,7 @@ const RELATIONSHIP_PHASES: Array<{
 ];
 
 export default function DiscoverScreen() {
+  const { t } = useTranslation();
   const { profile, isProfileComplete } = useUserProfile();
   const { partners, currentPartner } = usePartners();
   const [selectedPhase, setSelectedPhase] = useState<RelationshipPhase>("beginning");
@@ -93,10 +95,10 @@ export default function DiscoverScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.greeting}>
-            Hello, {profile?.name || "there"}! 💕
+            {t('home.hello', { name: profile?.name || 'there' })}
           </Text>
           <Text style={styles.subtitle}>
-            Let's plan something special
+            {t('home.letsPlan')}
           </Text>
         </View>
 
@@ -109,7 +111,7 @@ export default function DiscoverScreen() {
               end={{ x: 1, y: 1 }}
             >
               <View style={styles.partnerInfo}>
-                <Text style={styles.partnerLabel}>Planning for</Text>
+                <Text style={styles.partnerLabel}>{t('home.planningFor')}</Text>
                 <Text style={styles.partnerName}>{currentPartner.name}</Text>
                 <View style={styles.partnerDetails}>
                   <View style={styles.detailItem}>
@@ -121,7 +123,7 @@ export default function DiscoverScreen() {
                   <View style={styles.detailItem}>
                     <DollarSign size={14} color="#fff" />
                     <Text style={styles.detailText}>
-                      {profile?.budget || "Medium"} Budget
+                      {t('home.budget', { budget: profile?.budget || 'Medium' })}
                     </Text>
                   </View>
                 </View>
@@ -131,7 +133,7 @@ export default function DiscoverScreen() {
         )}
 
         <View style={styles.phasesSection}>
-          <Text style={styles.sectionTitle}>Choose Relationship Phase</Text>
+          <Text style={styles.sectionTitle}>{t('home.choosePhase')}</Text>
           <View style={styles.phasesGrid}>
             {RELATIONSHIP_PHASES.map((phase) => {
               const Icon = phase.icon;
@@ -171,13 +173,13 @@ export default function DiscoverScreen() {
               end={{ x: 1, y: 0 }}
             >
               <Plus size={24} color="#fff" />
-              <Text style={styles.addPartnerText}>Add Partner Profile</Text>
+              <Text style={styles.addPartnerText}>{t('home.addPartner')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         )}
 
         <View style={styles.quickActions}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>{t('home.quickActions')}</Text>
           <TouchableOpacity
             style={styles.actionCard}
             onPress={() => router.push("/booking-assistant" as any)}
@@ -188,7 +190,7 @@ export default function DiscoverScreen() {
               style={styles.actionGradient}
             >
               <Sparkles size={24} color="#fff" />
-              <Text style={styles.actionText}>AI Booking Assistant</Text>
+              <Text style={styles.actionText}>{t('home.aiAssistant')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>

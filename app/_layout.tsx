@@ -6,14 +6,17 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { UserProfileProvider } from "@/contexts/UserProfileContext";
 import { PartnersProvider } from "@/contexts/PartnersContext";
 import { trpc, trpcClient } from "@/lib/trpc";
+import '@/lib/i18n';
+import { useTranslation } from 'react-i18next';
 
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
 function RootLayoutNav() {
+  const { t } = useTranslation();
   return (
-    <Stack screenOptions={{ headerBackTitle: "Back" }}>
+    <Stack screenOptions={{ headerBackTitle: t('common.back') }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen 
         name="onboarding" 
@@ -26,21 +29,21 @@ function RootLayoutNav() {
       <Stack.Screen 
         name="partner-setup" 
         options={{ 
-          title: "Partner Profile",
+          title: t('profile.editProfile'),
           presentation: "modal"
         }} 
       />
       <Stack.Screen 
         name="date-details" 
         options={{ 
-          title: "Date Details",
+          title: t('planner.recommendations'),
           presentation: "modal"
         }} 
       />
       <Stack.Screen 
         name="booking-assistant" 
         options={{ 
-          title: "Date Guide",
+          title: t('guide.title'),
           presentation: "modal"
         }} 
       />
@@ -51,9 +54,9 @@ function RootLayoutNav() {
           presentation: "modal"
         }} 
       />
-      <Stack.Screen name="date-planner/experience" options={{ title: "Date Experience" }} />
-      <Stack.Screen name="date-planner/time" options={{ title: "Date Time" }} />
-      <Stack.Screen name="date-planner/recommendations" options={{ title: "Recommendations" }} />
+      <Stack.Screen name="date-planner/experience" options={{ title: t('planner.experienceTitle') }} />
+      <Stack.Screen name="date-planner/time" options={{ title: t('planner.timeTitle') }} />
+      <Stack.Screen name="date-planner/recommendations" options={{ title: t('planner.recommendations') }} />
       <Stack.Screen name="date-planner/itinerary" options={{ title: "Itinerary" }} />
     </Stack>
   );

@@ -1,0 +1,100 @@
+{
+  "common": {
+    "back": "Atrás",
+    "next": "Siguiente",
+    "done": "Listo",
+    "close": "Cerrar",
+    "saving": "Guardando..."
+  },
+  "tabs": {
+    "discover": "Descubrir",
+    "partners": "Parejas",
+    "dates": "Mis Citas",
+    "profile": "Perfil"
+  },
+  "home": {
+    "hello": "Hola, {{name}}! 💕",
+    "letsPlan": "Planifiquemos algo especial",
+    "choosePhase": "Elige la fase de relación",
+    "addPartner": "Agregar perfil de pareja",
+    "quickActions": "Acciones rápidas",
+    "aiAssistant": "Asistente de reservas IA",
+    "planningFor": "Planificando para",
+    "budget": "Presupuesto {{budget}}"
+  },
+  "profile": {
+    "deleteTitle": "Eliminar mis datos",
+    "deleteBody": "Esto eliminará permanentemente todos los datos locales en este dispositivo. No se puede deshacer.",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "locationBudget": "Ubicación y presupuesto",
+    "myInterests": "Mis intereses",
+    "likes": "Me gusta",
+    "dislikes": "No me gusta",
+    "settings": "Configuración",
+    "editProfile": "Editar perfil",
+    "paymentMethods": "Métodos de pago",
+    "savedPasswords": "Contraseñas guardadas"
+  },
+  "dates": {
+    "title": "Mis Citas",
+    "subtitle": "Sigue tus aventuras románticas",
+    "upcoming": "Próximas",
+    "past": "Citas pasadas"
+  },
+  "onboarding": {
+    "welcomeTitle": "Bienvenido a DateSpark 💕",
+    "welcomeSubtitle": "Tu compañero de citas con IA",
+    "welcomeDesc": "Obtén recomendaciones personalizadas según tu fase de relación, preferencias y presupuesto.",
+    "getStarted": "Comenzar",
+    "tellUs": "Cuéntanos sobre ti",
+    "basicInfo": "Información básica",
+    "name": "Nombre",
+    "namePh": "Ingresa tu nombre",
+    "age": "Edad",
+    "agePh": "Ingresa tu edad",
+    "gender": "Género",
+    "back": "Atrás",
+    "locationBudget": "Ubicación y Presupuesto",
+    "helpFind": "Ayúdanos a encontrar los mejores lugares",
+    "country": "País",
+    "countryPh": "Busca o ingresa tu país",
+    "city": "Ciudad",
+    "cityPh": "Ingresa tu ciudad",
+    "zip": "Código postal",
+    "zipPh": "Ingresa tu código postal",
+    "budget": "Presupuesto",
+    "low": "Bajo ($)",
+    "medium": "Medio ($$)",
+    "high": "Alto ($$$)",
+    "whatEnjoy": "¿Qué te gusta?",
+    "selectInterests": "Selecciona tus intereses (ordena por preferencia)",
+    "whatAvoid": "¿Qué evitar?",
+    "selectAvoid": "Selecciona lo que prefieres evitar",
+    "allSet": "¡Todo listo! 🎉",
+    "profileReady": "Tu perfil está listo",
+    "startDating": "Comenzar a salir"
+  },
+  "planner": {
+    "experienceTitle": "¿Qué tipo de experiencia deseas?",
+    "experienceSub": "Elige una o más",
+    "timeTitle": "¿A qué hora empieza tu cita?",
+    "timeSub": "Elige fecha y hora",
+    "date": "Fecha",
+    "time": "Hora",
+    "quick": ["Esta noche 7:00", "Mañana 7:00", "Este fin de semana 6:00"],
+    "selectDate": "Selecciona una fecha",
+    "selectTime": "Selecciona una hora",
+    "recommendations": "Recomendaciones",
+    "basedOn": "Según tus elecciones",
+    "giveMeMore": "Muéstrame más",
+    "editPreferences": "Editar preferencias",
+    "organize": "Organiza mi cita",
+    "budget": "Presupuesto",
+    "goal": "Objetivo",
+    "likes": "Me gusta"
+  },
+  "guide": {
+    "title": "Guía de Citas"
+  }
+}

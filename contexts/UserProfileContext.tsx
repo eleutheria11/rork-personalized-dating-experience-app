@@ -10,7 +10,7 @@ const UserProfileZ = z.object({
   gender: z.string().min(1),
   country: z.string().min(1),
   city: z.string().min(1),
-  zipCode: z.string().min(1),
+  zipCode: z.string().optional().default(""),
   budget: z.string().min(1),
   likes: z.array(z.string()).default([]),
   dislikes: z.array(z.string()).default([]),
@@ -43,11 +43,11 @@ export const [UserProfileProvider, useUserProfile] = createContextHook<Ctx>(() =
           gender: user.gender,
           country: (user as any).preferences?.country ?? (user as any).country ?? "",
           city: user.preferences.city,
-          zipCode: user.preferences.zipCode,
+          zipCode: user.preferences.zipCode ?? "",
           budget: user.preferences.budget,
           likes: user.preferences.likes ?? [],
           dislikes: user.preferences.dislikes ?? [],
-        };
+        } as UserProfile;
         const validated = UserProfileZ.parse(ui);
         setProfile(validated);
       } else {
@@ -92,7 +92,7 @@ export const [UserProfileProvider, useUserProfile] = createContextHook<Ctx>(() =
       preferences: {
         country: validated.country,
         city: validated.city,
-        zipCode: validated.zipCode,
+        zipCode: validated.zipCode ?? "",
         budget: validated.budget,
         likes: validated.likes,
         dislikes: validated.dislikes,
@@ -120,7 +120,6 @@ export const [UserProfileProvider, useUserProfile] = createContextHook<Ctx>(() =
       profile?.gender &&
       profile?.country &&
       profile?.city &&
-      profile?.zipCode &&
       (profile?.likes?.length ?? 0) > 0
     );
   }, [profile]);

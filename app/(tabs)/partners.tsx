@@ -12,10 +12,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router, useRootNavigationState } from "expo-router";
 import { usePartners } from "@/contexts/PartnersContext";
 import { User, Plus, Star, MapPin, Heart } from "lucide-react-native";
+import { useTranslation } from 'react-i18next';
 
 export default function PartnersScreen() {
   const { partners, currentPartner, setCurrentPartner } = usePartners();
   const navState = useRootNavigationState();
+  const { t } = useTranslation();
 
   const handleSelectPartner = (partnerId: string) => {
     const partner = partners.find(p => p.id === partnerId);
@@ -41,9 +43,9 @@ export default function PartnersScreen() {
       
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>Dating Partners</Text>
+          <Text style={styles.title}>{t('tabs.partners')}</Text>
           <Text style={styles.subtitle}>
-            Manage your dating partner profiles
+            {t('home.letsPlan')}
           </Text>
         </View>
 
@@ -57,7 +59,7 @@ export default function PartnersScreen() {
             style={styles.addGradient}
           >
             <Plus size={24} color="#fff" />
-            <Text style={styles.addText}>Add New Partner</Text>
+            <Text style={styles.addText}>{t('home.addPartner')}</Text>
           </LinearGradient>
         </TouchableOpacity>
 
@@ -65,9 +67,9 @@ export default function PartnersScreen() {
           {partners.length === 0 ? (
             <View style={styles.emptyState}>
               <Heart size={48} color="#E91E63" />
-              <Text style={styles.emptyTitle}>No partners yet</Text>
+              <Text style={styles.emptyTitle}>{t('profile.myInterests')}</Text>
               <Text style={styles.emptyText}>
-                Add your first dating partner to get personalized recommendations
+                {t('home.addPartner')}
               </Text>
             </View>
           ) : (
