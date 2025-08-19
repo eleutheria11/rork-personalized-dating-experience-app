@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { Heart, User, Calendar, Settings } from "lucide-react-native";
+import { Heart, User, Calendar, Settings, Shield } from "lucide-react-native";
 import React from "react";
 import { Platform } from "react-native";
 import { useTranslation } from 'react-i18next';

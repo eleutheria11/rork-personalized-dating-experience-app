@@ -96,5 +96,48 @@
   },
   "guide": {
     "title": "Date Guide"
+  },
+  "settings": {
+    "legal": "Legal",
+    "support": "Support",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "faq": "FAQ",
+    "deleteAccount": "Delete my account",
+    "deleteLocal": "Delete local data",
+    "report": "Report",
+    "block": "Block",
+    "legalAndSafety": "Legal & Safety"
+  },
+  "legal": {
+    "termsTitle": "Terms of Use",
+    "privacyTitle": "Privacy Policy",
+    "externalLink": "Open external link",
+    "placeholderUrl": "https://example.com/replace-me"
+  },
+  "support": {
+    "title": "Support",
+    "contactEmail": "support@example.com",
+    "emailUs": "Email Support",
+    "faqTitle": "FAQ",
+    "stub": "This is a placeholder for our FAQ. We'll add real questions soon."
+  },
+  "safety": {
+    "reportTitle": "Report",
+    "blockTitle": "Block",
+    "selectReason": "Select a reason",
+    "reasons": ["Spam or scam", "Harassment", "Inappropriate content", "Safety concern", "Other"],
+    "submitted": "Thanks — we'll review this soon.",
+    "blocked": "User has been blocked locally.",
+    "deletionQueued": "We'll email you when deletion completes.",
+    "confirmDeleteAccount": "This will request deletion of your account.",
+    "confirmDeleteLocal": "This deletes local data on this device.",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "permissions": {
+    "location": "We use your location to suggest nearby date ideas and matches.",
+    "photos": "Add profile photos and share date pics in chat.",
+    "notifications": "Get alerts for new matches and messages."
   }
 }

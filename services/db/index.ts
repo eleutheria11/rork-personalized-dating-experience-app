@@ -18,6 +18,9 @@ const supabaseAdapter: DataAdapter = {
   getSession: () => supabase.getSession(),
   upsertSession: (s) => supabase.upsertSession(s),
   clearAll: () => supabase.clearAll(),
+
+  updateDesiredExperiences: (e) => supabase.updateDesiredExperiences(e),
+  updateDateStartISO: (iso) => supabase.updateDateStartISO(iso),
 };
 
 let adapter: DataAdapter;
@@ -31,3 +34,13 @@ if (getSupabaseAvailability()) {
 }
 
 export { adapter, LocalStorageAdapter, SupabaseAdapter };
+
+export async function deleteMyAccount(): Promise<void> {
+  try {
+    console.log('[DB] deleteMyAccount called');
+    await adapter.deleteUser(true);
+  } catch (e) {
+    console.error('[DB] deleteMyAccount error', e);
+    throw e as Error;
+  }
+}

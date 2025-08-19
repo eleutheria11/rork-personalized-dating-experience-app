@@ -118,7 +118,20 @@ export class SupabaseAdapter {
     await sb('sessions', { method: 'DELETE', query: {} as Query });
     await sb('users', { method: 'DELETE', query: {} as Query });
   }
+
+  async updateDesiredExperiences(_exps: string[]): Promise<void> {
+    const session = await this.getSession();
+    const next = { ...(session ?? {}), desiredExperiences: _exps } as Session;
+    await this.upsertSession(next);
+  }
+
+  async updateDateStartISO(iso: string): Promise<void> {
+    const session = await this.getSession();
+    const next = { ...(session ?? {}), dateStartISO: iso } as Session;
+    await this.upsertSession(next);
+  }
 }
+
 
 export function getSupabaseAvailability() {
   return hasSupabase;

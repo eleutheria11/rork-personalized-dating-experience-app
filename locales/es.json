@@ -96,5 +96,48 @@
   },
   "guide": {
     "title": "Guía de Citas"
+  },
+  "settings": {
+    "legal": "Legal",
+    "support": "Soporte",
+    "terms": "Términos de uso",
+    "privacy": "Política de privacidad",
+    "faq": "Preguntas frecuentes",
+    "deleteAccount": "Eliminar mi cuenta",
+    "deleteLocal": "Eliminar datos locales",
+    "report": "Reportar",
+    "block": "Bloquear",
+    "legalAndSafety": "Legal y seguridad"
+  },
+  "legal": {
+    "termsTitle": "Términos de uso",
+    "privacyTitle": "Política de privacidad",
+    "externalLink": "Abrir enlace externo",
+    "placeholderUrl": "https://example.com/replace-me"
+  },
+  "support": {
+    "title": "Soporte",
+    "contactEmail": "support@example.com",
+    "emailUs": "Enviar correo al soporte",
+    "faqTitle": "Preguntas frecuentes",
+    "stub": "Este es un marcador de posición para las preguntas frecuentes. Agregaremos preguntas reales pronto."
+  },
+  "safety": {
+    "reportTitle": "Reportar",
+    "blockTitle": "Bloquear",
+    "selectReason": "Selecciona un motivo",
+    "reasons": ["Spam o estafa", "Acoso", "Contenido inapropiado", "Preocupación de seguridad", "Otro"],
+    "submitted": "Gracias — revisaremos esto pronto.",
+    "blocked": "El usuario ha sido bloqueado localmente.",
+    "deletionQueued": "Te enviaremos un correo cuando la eliminación se complete.",
+    "confirmDeleteAccount": "Esto solicitará la eliminación de tu cuenta.",
+    "confirmDeleteLocal": "Esto elimina los datos locales en este dispositivo.",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  },
+  "permissions": {
+    "location": "Usamos tu ubicación para sugerir ideas de citas y parejas cercanas.",
+    "photos": "Agrega fotos de perfil y comparte fotos de citas en el chat.",
+    "notifications": "Recibe alertas de nuevas coincidencias y mensajes."
   }
 }

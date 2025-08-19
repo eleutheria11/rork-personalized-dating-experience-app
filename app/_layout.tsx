@@ -58,6 +58,8 @@ function RootLayoutNav() {
       <Stack.Screen name="date-planner/time" options={{ title: t('planner.timeTitle') }} />
       <Stack.Screen name="date-planner/recommendations" options={{ title: t('planner.recommendations') }} />
       <Stack.Screen name="date-planner/itinerary" options={{ title: "Itinerary" }} />
+      <Stack.Screen name="settings/legal" options={{ title: t('settings.legalAndSafety') }} />
+      <Stack.Screen name="settings/support" options={{ title: t('settings.support') }} />
     </Stack>
   );
 }

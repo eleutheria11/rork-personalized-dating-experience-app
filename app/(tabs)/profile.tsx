@@ -21,7 +21,11 @@ import {
   Edit,
   CreditCard,
   Lock,
-  LogOut
+  LogOut,
+  Shield,
+  FileText,
+  HelpCircle,
+  Mail
 } from "lucide-react-native";
 
 export default function ProfileScreen() {
@@ -138,6 +142,24 @@ export default function ProfileScreen() {
             <Text style={styles.settingText}>Edit Profile</Text>
           </TouchableOpacity>
           
+          <TouchableOpacity
+            style={styles.settingItem}
+            activeOpacity={0.7}
+            onPress={() => router.push('/settings/legal' as any)}
+          >
+            <Shield size={20} color="#666" />
+            <Text style={styles.settingText}>Legal & Safety</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.settingItem}
+            activeOpacity={0.7}
+            onPress={() => router.push('/settings/support' as any)}
+          >
+            <HelpCircle size={20} color="#666" />
+            <Text style={styles.settingText}>Support</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.settingItem}
             activeOpacity={0.7}
