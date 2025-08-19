@@ -139,19 +139,21 @@ export default function DateTimeScreen() {
             <ScrollView style={styles.modalScroll} contentContainerStyle={styles.modalScrollContent}>
               {nextDays.map((d, idx) => {
                 const label = new Intl.DateTimeFormat(undefined, { weekday: 'short', month: 'short', day: 'numeric' }).format(d);
+                const isSelected =
+                  d.getFullYear() === when.getFullYear() && d.getMonth() === when.getMonth() && d.getDate() === when.getDate();
                 return (
                   <TouchableOpacity
                     key={idx}
-                    style={styles.modalItem}
+                    style={[styles.modalItem, isSelected ? styles.modalItemSelected : null]}
                     onPress={() => {
                       const updated = new Date(when);
                       updated.setFullYear(d.getFullYear(), d.getMonth(), d.getDate());
                       setWhen(updated);
                       setShowDate(false);
                     }}
-                    testID={`pick-date-${idx}`}
+                    testID={`pick-date-${idx}${isSelected ? '-selected' : ''}`}
                   >
-                    <Text style={styles.modalItemText}>{label}</Text>
+                    <Text style={[styles.modalItemText, isSelected ? styles.modalItemTextSelected : null]}>{label}</Text>
                   </TouchableOpacity>
                 );
               })}
@@ -168,26 +170,32 @@ export default function DateTimeScreen() {
             <Text style={styles.modalTitle}>Select a time</Text>
             <View style={styles.timeGrid}>
               <ScrollView style={styles.timeCol} contentContainerStyle={styles.modalScrollContent}>
-                {hours.map((h) => (
-                  <TouchableOpacity key={h} style={styles.modalItem} onPress={() => {
-                    const updated = new Date(when);
-                    updated.setHours(h, updated.getMinutes(), 0, 0);
-                    setWhen(updated);
-                  }} testID={`pick-hour-${h}`}>
-                    <Text style={styles.modalItemText}>{h.toString().padStart(2, '0')}</Text>
-                  </TouchableOpacity>
-                ))}
+                {hours.map((h) => {
+                  const isSelected = when.getHours() === h;
+                  return (
+                    <TouchableOpacity key={h} style={[styles.modalItem, isSelected ? styles.modalItemSelected : null]} onPress={() => {
+                      const updated = new Date(when);
+                      updated.setHours(h, updated.getMinutes(), 0, 0);
+                      setWhen(updated);
+                    }} testID={`pick-hour-${h}${isSelected ? '-selected' : ''}`}>
+                      <Text style={[styles.modalItemText, isSelected ? styles.modalItemTextSelected : null]}>{h.toString().padStart(2, '0')}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </ScrollView>
               <ScrollView style={styles.timeCol} contentContainerStyle={styles.modalScrollContent}>
-                {minutes.map((m) => (
-                  <TouchableOpacity key={m} style={styles.modalItem} onPress={() => {
-                    const updated = new Date(when);
-                    updated.setMinutes(m, 0, 0);
-                    setWhen(updated);
-                  }} testID={`pick-minute-${m}`}>
-                    <Text style={styles.modalItemText}>{m.toString().padStart(2, '0')}</Text>
-                  </TouchableOpacity>
-                ))}
+                {minutes.map((m) => {
+                  const isSelected = when.getMinutes() === m;
+                  return (
+                    <TouchableOpacity key={m} style={[styles.modalItem, isSelected ? styles.modalItemSelected : null]} onPress={() => {
+                      const updated = new Date(when);
+                      updated.setMinutes(m, 0, 0);
+                      setWhen(updated);
+                    }} testID={`pick-minute-${m}${isSelected ? '-selected' : ''}`}>
+                      <Text style={[styles.modalItemText, isSelected ? styles.modalItemTextSelected : null]}>{m.toString().padStart(2, '0')}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </ScrollView>
             </View>
             <TouchableOpacity onPress={() => setShowTime(false)} style={styles.modalClose} testID="close-time"><Text style={styles.modalCloseText}>Done</Text></TouchableOpacity>
@@ -220,8 +228,10 @@ const styles = StyleSheet.create({
   modalTitle: { fontSize: 18, fontWeight: '700', padding: 16 },
   modalScroll: { maxHeight: 320 },
   modalScrollContent: { paddingHorizontal: 16, paddingBottom: 20 },
-  modalItem: { paddingVertical: 12 },
+  modalItem: { paddingVertical: 12, borderRadius: 8, paddingHorizontal: 8 },
+  modalItemSelected: { backgroundColor: '#FFE4EF' },
   modalItemText: { fontSize: 16, color: '#111' },
+  modalItemTextSelected: { color: '#E91E63', fontWeight: '700' },
   modalClose: { alignSelf: 'stretch', margin: 16, paddingVertical: 12, backgroundColor: '#111', borderRadius: 12, alignItems: 'center' },
   modalCloseText: { color: '#fff', fontWeight: '700' },
   timeGrid: { flexDirection: 'row', gap: 12, paddingHorizontal: 16 },
