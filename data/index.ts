@@ -128,8 +128,10 @@ export class LocalStorageAdapter implements DataAdapter {
   }
 
   async upsertSession(session: Session): Promise<void> {
-    const validated = SessionSchema.parse(session);
-    await AsyncStorage.setItem(KEYS.session, JSON.stringify(validated));
+    const existingRaw = await AsyncStorage.getItem(KEYS.session);
+    const existing = existingRaw ? SessionSchema.partial().parse(JSON.parse(existingRaw)) : {} as Partial<Session>;
+    const merged: Session = SessionSchema.parse({ ...existing, ...session, lastActiveAt: Date.now() });
+    await AsyncStorage.setItem(KEYS.session, JSON.stringify(merged));
   }
 
   async clearAll(): Promise<void> {

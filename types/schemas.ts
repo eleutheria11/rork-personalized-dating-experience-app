@@ -54,5 +54,7 @@ export const SessionSchema = z.object({
   id: z.string().min(1),
   createdAt: z.number(),
   lastActiveAt: z.number(),
+  currentPartnerId: z.string().optional().nullable(),
+  selectedPhase: z.enum(["beginning", "courtship", "dating", "reconciliation"]).optional(),
 });
 export type Session = z.infer<typeof SessionSchema>;
