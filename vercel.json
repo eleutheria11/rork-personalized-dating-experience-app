@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "backend/hono.ts": {
+      "runtime": "@vercel/node"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/backend/hono"
+    }
+  ]
+}
