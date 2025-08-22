@@ -1,13 +1,13 @@
 {
   "functions": {
-    "api/index.ts": {
-      "runtime": "nodejs18.x"
+    "backend/hono.ts": {
+      "runtime": "@vercel/node"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index"
+      "destination": "/backend/hono"
     }
   ]
 }
