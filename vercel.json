@@ -1,17 +1,17 @@
 {
-  "buildCommand": "bun run build",
-  "outputDirectory": "dist",
-  "installCommand": "bun install",
-  "framework": null,
   "functions": {
-    "backend/hono.ts": {
+    "api/index.ts": {
       "runtime": "nodejs18.x"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/backend/hono"
+      "destination": "/api/index"
+    },
+    {
+      "source": "/((?!api).*)",
+      "destination": "/index.html"
     }
   ]
 }
