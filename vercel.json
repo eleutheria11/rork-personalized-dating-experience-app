@@ -1,7 +1,13 @@
 {
   "functions": {
-    "api/index.ts": {
+    "backend/**/*.ts": {
       "runtime": "nodejs18.x"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/backend/hono"
+    }
+  ]
 }
