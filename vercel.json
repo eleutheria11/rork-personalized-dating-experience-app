@@ -1,7 +1,11 @@
 {
+  "buildCommand": "bun run build",
+  "outputDirectory": "dist",
+  "installCommand": "bun install",
+  "framework": null,
   "functions": {
     "backend/hono.ts": {
-      "runtime": "@vercel/node"
+      "runtime": "nodejs18.x"
     }
   },
   "rewrites": [
