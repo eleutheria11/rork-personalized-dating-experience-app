@@ -1,4 +1,8 @@
 {
+  "buildCommand": "bun run build",
+  "outputDirectory": "dist",
+  "installCommand": "bun install",
+  "framework": null,
   "functions": {
     "api/index.ts": {
       "runtime": "nodejs18.x"
