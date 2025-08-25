@@ -25,4 +25,4 @@ app.get("/", (c) => {
   return c.json({ status: "ok", message: "API is running" });
 });
 
-export default app;
+export default app.fetch;
